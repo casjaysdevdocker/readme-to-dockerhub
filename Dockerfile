@@ -53,7 +53,7 @@ ENV SHELL="/bin/bash" \
   HOSTNAME="casjaysdev-readme-to-dockerhub" \
   TZ="${TZ:-America/New_York}" \
   PATH="/root/.local/share/fnm/aliases/default/bin:$PATH" \
-  NVM_DIR="/root/.nvm"'
+  NVM_DIR="/root/.nvm"
 
 WORKDIR /app
 
@@ -66,4 +66,3 @@ COPY --from=build /. /
 ENTRYPOINT [ "tini", "--" ]
 HEALTHCHECK CMD [ "/usr/local/bin/entrypoint-readme-to-dockerhub.sh", "healthcheck" ]
 CMD [ "/usr/local/bin/entrypoint-readme-to-dockerhub.sh" ]
-
