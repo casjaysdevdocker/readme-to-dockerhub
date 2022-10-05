@@ -3,7 +3,7 @@ FROM casjaysdevdocker/nodejs:latest as build
 ARG LICENSE=WTFPL \
   IMAGE_NAME=readme-to-dockerhub \
   TIMEZONE=America/New_York \
-  NODE_VERSION="14" \
+  NODE_VERSION="14.13.0" \
   PORT=
 
 ENV SHELL="/bin/bash" \
