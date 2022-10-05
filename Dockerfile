@@ -4,16 +4,18 @@ ARG LICENSE=WTFPL \
   IMAGE_NAME=readme-to-dockerhub \
   TIMEZONE=America/New_York \
   NODE_VERSION="14" \
-  PORT= \
+  PORT=
 
-  ENV SHELL=/bin/bash \
-  TERM=xterm-256color \
-  HOSTNAME=${HOSTNAME:-casjaysdev-$IMAGE_NAME} \
-  TZ=$TIMEZONE
+ENV SHELL="/bin/bash" \
+  TERM="xterm-256color" \
+  HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}" \
+  TZ="$TIMEZONE" \
+  NODE_MANAGER="fnm"
 
 RUN mkdir -p /bin/ /config/ /data/ && \
   rm -Rf /bin/.gitkeep /config/.gitkeep /data/.gitkeep && \
   apk update -U --no-cache && \
+  apk add --no-cache nodejs && \
   setup_node $NODE_VERSION
 
 COPY ./bin/. /usr/local/bin/
