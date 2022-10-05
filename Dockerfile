@@ -4,7 +4,8 @@ ARG LICENSE=WTFPL \
   IMAGE_NAME=readme-to-dockerhub \
   TIMEZONE=America/New_York \
   NODE_VERSION="14" \
-  PORT=
+  PORT= \
+  NVM_DIR="/root/.nvm"
 
 ENV SHELL=/bin/bash \
   TERM=xterm-256color \
@@ -14,9 +15,14 @@ ENV SHELL=/bin/bash \
 RUN mkdir -p /bin/ /config/ /data/ && \
   rm -Rf /bin/.gitkeep /config/.gitkeep /data/.gitkeep && \
   apk update -U --no-cache && \
-  eval "$(fnm env)" && \
-  fnm install $NODE_VERSION && \
-  fnm default $NODE_VERSION
+  echo 'export NVM_DIR="$HOME/.nvm"'                     >> "$HOME/.bashrc" && \
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> "$HOME/.bashrc" && \
+  . /root/.bashrc && \
+  curl -q -LSsf "https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh" -o "/tmp/nvm.sh" && \
+  chmod 755 "/tmp/nvm.sh" && \
+  bash -c "/tmp/nvm.sh" --no-use && \
+  nvm install $NODE_VERSION && \
+  nvm default $NODE_VERSION
 
 COPY ./bin/. /usr/local/bin/
 COPY ./config/. /config/
@@ -46,9 +52,10 @@ ENV SHELL="/bin/bash" \
   TERM="xterm-256color" \
   HOSTNAME="casjaysdev-readme-to-dockerhub" \
   TZ="${TZ:-America/New_York}" \
-  PATH="/root/.local/share/fnm/aliases/default/bin:$PATH"
+  PATH="/root/.local/share/fnm/aliases/default/bin:$PATH" \
+  NVM_DIR="/root/.nvm"'
 
-WORKDIR /root
+WORKDIR /app
 
 VOLUME ["/config", "/data"]
 

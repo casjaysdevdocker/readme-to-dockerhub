@@ -53,9 +53,12 @@ BIN_DIR="${BIN_DIR:-/usr/local/bin}"
 DATA_DIR="${DATA_DIR:-$(__find /data/ 2>/dev/null | grep '^' || false)}"
 CONFIG_DIR="${CONFIG_DIR:-$(__find /config/ 2>/dev/null | grep '^' || false)}"
 CONFIG_COPY="${CONFIG_COPY:-false}"
+export FNM_DIR="/root/.local/share/fnm"
+export FNM_VERSION_FILE_STRATEGY="local"
+export FNM_NODE_DIST_MIRROR="https://nodejs.org/dist"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Additional variables
-eval "$(fnm env --shell bash)"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Export variables
 export TZ HOSTNAME
@@ -94,7 +97,8 @@ fi
 [ -f "/etc/.env.sh" ] && rm -Rf "/etc/.env.sh"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Additional commands
-fnm use ${NODE_VERSION:-14}
+[ -f "/app/.node_version" ] && NODE_VERSION="$(</app/.node_version)"
+fnm use ${NODE_VERSION:-14} &>/dev/null
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 case "$1" in
 --help) # Help message
